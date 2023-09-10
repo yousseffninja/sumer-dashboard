@@ -39,11 +39,11 @@ export const items = [
     external: false,
     disabled: false,
     menu: false,
-    title: "Orders",
-    path: "/orders",
+    title: "Users",
+    path: "/users",
     icon: (
       <SvgIcon fontSize="small">
-        <ChartBarIcon />
+        <HomeIcon />
       </SvgIcon>
     ),
   },
@@ -51,11 +51,11 @@ export const items = [
     external: false,
     disabled: false,
     menu: false,
-    title: "Send Notifications",
-    path: "/send-notifictions",
+    title: "Products",
+    path: "/products",
     icon: (
       <SvgIcon fontSize="small">
-        <NotificationAddIcon />
+        <HomeIcon />
       </SvgIcon>
     ),
   },
@@ -63,62 +63,11 @@ export const items = [
     external: false,
     disabled: false,
     menu: false,
-    title: "Offices",
-    path: "/offices",
-    icon: (
-      <SvgIcon fontSize="medium">
-        <LocalShippingIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    external: false,
-    disabled: false,
-    menu: false,
-    title: "Admins",
-    path: "/admins",
+    title: "Salons",
+    path: "/salons",
     icon: (
       <SvgIcon fontSize="small">
-        <UsersIcon />
-      </SvgIcon>
-    ),
-  },
-  ,
-  {
-    external: false,
-    disabled: false,
-    menu: false,
-    title: "Users management",
-    children: [
-      
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Clients",
-        path: "/users-management/clients",
-        icon: (
-          <SvgIcon fontSize="small">
-            <UsersIcon />
-          </SvgIcon>
-        ),
-      },
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Drivers",
-        path: "/users-management/drivers",
-        icon: (
-          <SvgIcon fontSize="small">
-            <PeopleAltIcon />
-          </SvgIcon>
-        ),
-      },
-    ],
-    icon: (
-      <SvgIcon fontSize="medium">
-        <UsersIcon />
+        <HomeIcon />
       </SvgIcon>
     ),
   },
@@ -126,184 +75,12 @@ export const items = [
     external: false,
     disabled: false,
     menu: false,
-    title: "Financials",
+    title: "Consultations",
+    path: "/consultations",
     icon: (
       <SvgIcon fontSize="small">
-        <BanknotesIcon />
+        <HomeIcon />
       </SvgIcon>
     ),
-    children: [
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Transactions",
-        path: "/financials/transactions",
-        icon: (
-          <SvgIcon fontSize="small">
-            <CurrencyDollarIcon />
-          </SvgIcon>
-        ),
-      },
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Offices Balance",
-        path: "/financials/offices-balance",
-        icon: (
-          <SvgIcon fontSize="small">
-            <CreditCardIcon />
-          </SvgIcon>
-        ),
-      },
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Drivers Balances",
-        path: "/financials/drivers-balances",
-        icon: (
-          <SvgIcon fontSize="small">
-            <CreditCardIcon />
-          </SvgIcon>
-        ),
-      },
-    ],
-  },
-  {
-    external: false,
-    disabled: false,
-    menu: false,
-    title: "Vehicles management",
-    children: [
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Vehicles",
-        path: "/vehicles-management/vehicles",
-        icon: (
-          <SvgIcon fontSize="small">
-            <NoCrashIcon />
-          </SvgIcon>
-        ),
-      },
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Verification Requests",
-        path: "/vehicles-management/verification-requests",
-        icon: (
-          <SvgIcon fontSize="small">
-            <TaxiAlertIcon />
-          </SvgIcon>
-        ),
-      },
-    ],
-    icon: (
-      <SvgIcon fontSize="medium">
-        <DriveEtaIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    external: false,
-    disabled: false,
-    menu: false,
-    title: "ContactMessages",
-    path: "/contact-messages",
-    icon: (
-      <SvgIcon fontSize="small">
-        <MarkEmailUnreadIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    external: false,
-    disabled: false,
-    menu: false,
-    title: "Account",
-    path: "/account",
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    external: false,
-    disabled: false,
-    menu: false,
-    title: "Settings",
-    icon: (
-      <SvgIcon fontSize="small">
-        <CogIcon />
-      </SvgIcon>
-    ),
-    children: [
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "About",
-        path: "/settings/about",
-        icon: (
-          <SvgIcon fontSize="small">
-            <CogIcon />
-          </SvgIcon>
-        ),
-      },
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Social Links",
-        path: "/settings/social-links",
-        icon: (
-          <SvgIcon fontSize="small">
-            <CogIcon />
-          </SvgIcon>
-        ),
-      },
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Terms and Conditions",
-        path: "/settings/terms-and-conditions",
-        icon: (
-          <SvgIcon fontSize="small">
-            <PrivacyTipIcon />
-          </SvgIcon>
-        ),
-      },
-    ],
-  },
-  {
-    external: false,
-    disabled: false,
-    menu: false,
-    title: "Application Settings",
-    icon: (
-      <SvgIcon fontSize="small">
-        <CogIcon />
-      </SvgIcon>
-    ),
-    children: [
-      {
-        external: false,
-        disabled: false,
-        menu: false,
-        title: "Shipping Order",
-        path: "/application-settings/shipping-order",
-        icon: (
-          <SvgIcon fontSize="small">
-            <CogIcon />
-          </SvgIcon>
-        ),
-      },
-    ],
   },
 ];

@@ -134,6 +134,7 @@ export const AuthProvider = ({ children }: any) => {
       const { data, token } = res.data;
       window.sessionStorage.setItem('authenticated', 'true');
       window.sessionStorage.setItem('token', token);
+      window.sessionStorage.setItem('user', data);
       axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       user.id = data.id;
       user.avatar = data.avatar;
