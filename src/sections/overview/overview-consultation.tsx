@@ -17,24 +17,27 @@ import {
   SvgIcon
 } from '@mui/material';
 import React from 'react';
-import getTimeElapsedString from '@/utils/getTimeElapsedString'; 
 import { useTranslation } from "react-i18next";
-import { useProduct } from "@/hooks/use-product"
+import { useConsultation} from "@/hooks/use-consultation"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
+import { Filter } from "@/@types/filter"
 
-export const OverviewLatestVehicles = (props: any) => {
-  const { products = [], sx } = props;
+export const OverviewConsultations = (props: any) => {
+  const { consultations = [], sx } = props;
   const { t } = useTranslation();
     const router = useRouter();
-    const productContext = useProduct();
+    const consultationContext = useConsultation();
 
-    const fetchProducts = async () => {
-      productContext?.fetchProducts(0, 5);
+    const fetchConsultation = async () => {
+      const queryParams: Filter[] = [
+        {key: 'sort', value: '-promotedAds'}
+      ];
+      consultationContext?.fetchConsultations(0, 5, queryParams);
     };
     
     useEffect(() => {
-      fetchProducts();
+      fetchConsultation();
     }, []);
   
     const handleRoute = () => {
@@ -47,23 +50,23 @@ export const OverviewLatestVehicles = (props: any) => {
 
   return (
     <Card sx={sx}>
-      <CardHeader title={t("Top Products")} />
+      <CardHeader title={t("Top Trending Consultations")} />
       <List>
-        {productContext?.product.map((product: any, index: number) => {
-          const hasDivider = index < products.length - 1;
+        {consultationContext?.consultations.map((consultation: any, index: number) => {
+          const hasDivider = index < consultations.length - 1;
 
           return (
             <ListItem
               divider={hasDivider}
-              key={product.id}
+              key={consultation._id}
             >
               <ListItemAvatar>
                 {
-                  product.ProductPhoto
+                  consultation?.owner?.userPhoto
                     ? (
                       <Box
                         component="img"
-                        src={product.ProductPhoto}
+                        src={consultation?.owner?.userPhoto}
                         sx={{
                           borderRadius: 1,
                           height: 48,
@@ -84,7 +87,7 @@ export const OverviewLatestVehicles = (props: any) => {
                 }
               </ListItemAvatar>
               <ListItemText
-                primary={product.name}
+                primary={consultation?.owner?.name}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
                 secondaryTypographyProps={{ variant: 'body2' }}
               />
@@ -117,7 +120,7 @@ export const OverviewLatestVehicles = (props: any) => {
   );
 };
 
-OverviewLatestVehicles.propTypes = {
+OverviewConsultations.propTypes = {
   products: PropTypes.array,
   sx: PropTypes.object
 };

@@ -7,18 +7,21 @@ function buildQueryString(params: Filter[]) {
     throw new Error('Input must be an array of key-value pairs.');
   }
 
-  const queryString = params.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
-  return `?${queryString}`;
+  const queryString = params.map(({ key, value }) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
+  return `&${queryString}`;
 }
 
 // Product API
-export const get_products = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/products?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter)}`
+export const get_products = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/products?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+export const get_invoices = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `products/invoices?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 
 // Salon API
-export const get_salons = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/salons?page=${page + 1}&limit=${rowsPerPage}&${filtersString(filter)}`
+export const get_salons = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/salons?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+export const get_salon_booking = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/salonBooking/?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 
 // Salon API
-export const get_consultations = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/consultation?page=${page + 1}&limit=${rowsPerPage}&${filtersString(filter)}`
+export const get_consultations = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/consultation?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+export const get_constlant = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/consultation/consltant?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 
 // Admins API
 export const get_admin = (id: string) => `/admins/${id}`;

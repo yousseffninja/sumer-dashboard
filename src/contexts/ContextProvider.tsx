@@ -8,6 +8,7 @@ import AdminContextProvider from "./admin-context";
 import FinancialsProvider from '@/contexts/financials-context';
 import ProductProvider from '@/contexts/product-context';
 import SalonProvider from '@/contexts/salon-context';
+import ConsultationContext  from "./consultation-context";
 
 const ContextProvider = ({ children }: any) => {
   return (
@@ -20,7 +21,9 @@ const ContextProvider = ({ children }: any) => {
                 <FinancialsProvider>
                   <ProductProvider>
                     <SalonProvider>
-                      <AuthProvider>{children}</AuthProvider>
+                      <ConsultationContext>
+                        <AuthProvider>{children}</AuthProvider>
+                      </ConsultationContext>
                     </SalonProvider>
                   </ProductProvider>
                 </FinancialsProvider>

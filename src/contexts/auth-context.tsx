@@ -131,10 +131,10 @@ export const AuthProvider = ({ children }: any) => {
     const res = await axiosClient.post('/users/login', { email: username, password });
 
     if(res.status == 200){
-      const { data } = res.data;
+      const { data, token } = res.data;
       window.sessionStorage.setItem('authenticated', 'true');
-      window.sessionStorage.setItem('token', data.token);
-      axiosClient.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      window.sessionStorage.setItem('token', token);
+      axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       user.id = data.id;
       user.avatar = data.avatar;
       user.name = data.name;

@@ -20,27 +20,26 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { Scrollbar } from '../../components/scrollbar';
-import { useProduct } from '@/hooks/use-product';
+import { useSalon } from '@/hooks/use-salon';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
-export const OverviewLatestOrders = (props: any) => {
+export const OverviewLatestSalonBookings = (props: any) => {
   const {  sx } = props;
 
   const router = useRouter();
   const {t}= useTranslation();
-  const productContext = useProduct();
+  const salonContext = useSalon();
 
-
-  const fetchInvoices = async () => {
+  const fetchBookings= async () => {
     const queryParams: any = [
       {key: 'sort', value: '-createdAt'}
     ];
-    productContext?.fetchInvoices(0, 5, queryParams);
+    salonContext?.fetchSalonBookings(0, 5, queryParams);
   }
   
   useEffect(() => {
-    fetchInvoices()
+    fetchBookings()
   
   }, []);
 
@@ -51,32 +50,40 @@ export const OverviewLatestOrders = (props: any) => {
 
   return (
     <Card sx={sx}>
-      <CardHeader title={t("Latest Orders")} />
+      <CardHeader title={t("Latest Salon Bookings")} />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t('Invoice ID')}</TableCell>
+                <TableCell>{t('Book ID')}</TableCell>
                 <TableCell>{t('Created at')}</TableCell>
-                <TableCell>{t('Total Amount')}</TableCell>
+                <TableCell>{t('Payment Status')}</TableCell>
+                <TableCell>{t('from')}</TableCell>
+                <TableCell>{t('to')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {productContext?.invoices.map((invoice: any) => {
-                const created_at = format(Date.parse(invoice.createdAt), "dd/MM/yyyy");
+              {salonContext?.bookings.map((book: any) => {
+                const created_at = format(Date.parse(book.date), "dd/MM/yyyy");
 
                 return (
                   <TableRow
                     hover
-                    key={invoice?._id}
+                    key={book?._id}
                   >
-                    <TableCell>{invoice.invoiceId}</TableCell>
+                    <TableCell>{book._id}</TableCell>
                     <TableCell>
                       {created_at}
                     </TableCell>
                     <TableCell>
-                      {invoice.totalAmount} SAR
+                      {t(book.paymentStatus)}
+                    </TableCell>
+                    <TableCell>
+                      {book.startTime}
+                    </TableCell>
+                    <TableCell>
+                      {book.endTime}
                     </TableCell>
                   </TableRow>
                 );
@@ -105,7 +112,7 @@ export const OverviewLatestOrders = (props: any) => {
   );
 };
 
-OverviewLatestOrders.prototype = {
+OverviewLatestSalonBookings.prototype = {
   orders: PropTypes.array,
   sx: PropTypes.object
 };
