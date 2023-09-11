@@ -33,7 +33,7 @@ export default function ImageGallery(props: any) {
   };
   const handleClose = () => setOpen(false);
 
-  const { cols, galleryTitle, imagesArray, path } = props;
+  const { cols, galleryTitle, imagesArray } = props;
   const { t } = useTranslation();
   return (
     <>
@@ -45,14 +45,13 @@ export default function ImageGallery(props: any) {
           <CardContent>
             <ImageList cols={cols}>
               {imagesArray &&
-                path &&
                 imagesArray.map((item: any, i: number) => (
                   <ImageListItem sx={{ cursor: "pointer" }} key={i}>
                     <img
                       onClick={handleOpen}
-                      src={path + item.image}
-                      srcSet={path + item.image}
-                      alt={"Pronto Image"}
+                      src={item.ProductPhotoPerview}
+                      srcSet={item.ProductPhotoPerview}
+                      alt={"Sumer Image"}
                       loading="lazy"
                     />
                   </ImageListItem>

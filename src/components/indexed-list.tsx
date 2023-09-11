@@ -23,7 +23,7 @@ export const IndexedList = (props: any) => {
                             {item.icon}
                         </Avatar>
                     </ListItemAvatar>      
-                    <ListItemText  primary={item.label} secondary={item.value?? '-'} />
+                    <ListItemText  primary={item.label} secondary={item?.value?? '-'} />
                 </ListItem>  
             )))
       }

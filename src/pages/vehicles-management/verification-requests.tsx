@@ -7,9 +7,9 @@ import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
 import { useVehicle } from "@/hooks/use-vehicles";
 import { useTranslation } from "react-i18next";
-import { VehiclesSearch } from "@/sections/vehicles/vehicles-search";
+import { VehiclesSearch } from "@/sections/products/vehicles-search";
 import { useSelection } from "@/hooks/use-selection";
-import { VerificationRequestsTable } from "@/sections/vehicles/verification-requests-table";
+import { VerificationRequestsTable } from "@/sections/products/verification-requests-table";
 import VehicleContextProvider from "@/contexts/vehicle-context";
 const Page = () => {
   const { t } = useTranslation();

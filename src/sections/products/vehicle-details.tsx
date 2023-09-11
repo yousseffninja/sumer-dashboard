@@ -13,10 +13,11 @@ import {
 import React from "react";
 import { IndexedList } from "@/components/indexed-list";
 import PropTypes from "prop-types";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import DescriptionIcon from '@mui/icons-material/Description';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import Man3Icon from "@mui/icons-material/Man3";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import DepartureBoardIcon from "@mui/icons-material/DepartureBoard";
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import AbcIcon from "@mui/icons-material/Abc";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
 import AdjustIcon from "@mui/icons-material/Adjust";
@@ -34,11 +35,11 @@ export const VehicleDetails = (props: any) => {
     {
       icon: (
         <SvgIcon fontSize="small">
-          <DirectionsCarIcon />
+          <InventoryIcon />
         </SvgIcon>
       ),
-      label: t("Brand"),
-      value: vehicle.brand_id,
+      label: t("name"),
+      value: vehicle?.name,
     },
     {
       icon: (
@@ -47,7 +48,7 @@ export const VehicleDetails = (props: any) => {
         </SvgIcon>
       ),
       label: t("Model"),
-      value: vehicle.brand_model_id,
+      value: vehicle?.brand,
     },
     {
       icon: (
@@ -56,25 +57,33 @@ export const VehicleDetails = (props: any) => {
         </SvgIcon>
       ),
       label: t("Color"),
-      value: <input type="color" value={`#${vehicle.color}`} disabled readOnly/>
+      value: (
+        <Box>
+          {vehicle && vehicle.color && vehicle.color[0] ? (
+            <input type="color" value={vehicle.color[0]} disabled readOnly />
+          ) : (
+            "N/A" 
+          )}
+        </Box>
+      ),
     },
     {
       icon: (
         <SvgIcon fontSize="small">
-          <DepartureBoardIcon />
+          <DescriptionIcon />
         </SvgIcon>
       ),
-      label: t("Year"),
-      value: vehicle?.year,
+      label: t("description"),
+      value: vehicle?.desc,
     },
     {
       icon: (
         <SvgIcon fontSize="small">
-          <AbcIcon />
+          <LocalOfferIcon />
         </SvgIcon>
       ),
-      label: t("Plate"),
-      value: vehicle?.plate,
+      label: t("count"),
+      value: vehicle?.availabilityCount,
     },
     {
       icon: (
@@ -82,8 +91,8 @@ export const VehicleDetails = (props: any) => {
           <EventAvailableIcon />
         </SvgIcon>
       ),
-      label: t("License expiry date"),
-      value: new Date(vehicle?.license_expire_at).toLocaleDateString('en-GB'),
+      label: t("Price"),
+      value: vehicle?.price,
     },
     {
       icon: (
@@ -91,15 +100,15 @@ export const VehicleDetails = (props: any) => {
           <Man3Icon />
         </SvgIcon>
       ),
-      label: t("Driver's name"),
-      value: vehicle.__user__?.name,
+      label: t("Category"),
+      value: vehicle?.category?.name,
     },
   ];
 
   return (
     <Box sx={{ width: "100%", flexGrow: 1 }}>
       <Card>
-        <CardHeader subheader={"#" + vehicle.brand_model_id} title={vehicle.brand_id} />
+        <CardHeader subheader={"#" + vehicle?._id} title={vehicle?.name} />
         <Divider />
         <CardContent>
           <Grid container spacing={12} wrap="wrap">

@@ -5,16 +5,16 @@ import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIc
 import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
-import { useVehicle } from "@/hooks/use-vehicles";
+import { useProduct } from "@/hooks/use-product";
 import { useTranslation } from "react-i18next";
-import { VehiclesSearch } from "@/sections/vehicles/vehicles-search";
-import { VehiclesTable } from "@/sections/vehicles/vehicles-table";
+import { VehiclesSearch } from "@/sections/products/vehicles-search";
+import { ProductsTable } from "@/sections/products/vehicles-table";
 import { useSelection } from "@/hooks/use-selection";
 import VehicleContextProvider from "@/contexts/vehicle-context";
 const Page = () => {
   const { t } = useTranslation();
 
-  const vehicleContext = useVehicle();
+  const productContext = useProduct();
 
   // Pagination Controls
   const [controller, setController] = useState({
@@ -28,12 +28,12 @@ const Page = () => {
     ],
   });
 
-  // Extracting and Storing vehicles' Id (if vehicles context is found);
-  const vehiclesIds: any[] | undefined = useMemo(
-    () => vehicleContext?.vehicles.map((vehicle: any) => vehicle.id),
-    [vehicleContext?.vehicles]
+  const productsIds: any[] | undefined = useMemo(
+    () => productContext?.product.map((product: any) => product.id),
+    [productContext?.product]
   );
-  const vehiclesSelection = useSelection(vehiclesIds);
+  const productsSelection = useSelection(productsIds);
+
   // Pageination control
   const handlePageChange = (event: any, newPage: number) => {
     setController({
@@ -78,13 +78,13 @@ const Page = () => {
   };
 
   useEffect(() => {
-    vehicleContext?.fetchVehicles(controller.page, controller.rowsPerPage, controller.filter);
+    productContext?.fetchProducts(controller.page, controller.rowsPerPage);
   }, [controller]);
 
   return (
     <>
       <Head>
-        <title>{t("Vehicles")} | Pronto</title>
+        <title>{t("Products")} | Sumer</title>
       </Head>
       <Box
         component="main"
@@ -97,24 +97,24 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">{t("Vehicles")}</Typography>
+                <Typography variant="h4">{t("Products")}</Typography>
               </Stack>
             </Stack>
             <VehiclesSearch onSearchChange={handleSearch} />
-            {(vehicleContext == undefined || vehicleContext?.count > 0) && (
-              <VehiclesTable
-                count={vehicleContext?.count}
-                items={vehicleContext?.vehicles}
-                onDeselectAll={vehiclesSelection.handleDeselectAll}
-                onDeselectOne={vehiclesSelection.handleDeselectOne}
+            {(productContext == undefined || productContext?.count > 0) && (
+              <ProductsTable
+                count={productContext?.count}
+                items={productContext?.product}
+                onDeselectAll={productsSelection.handleDeselectAll}
+                onDeselectOne={productsSelection.handleDeselectOne}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
-                onSelectAll={vehiclesSelection.handleSelectAll}
-                onSelectOne={vehiclesSelection.handleSelectOne}
+                onSelectAll={productsSelection.handleSelectAll}
+                onSelectOne={productsSelection.handleSelectOne}
                 page={controller.page}
                 rowsPerPage={controller.rowsPerPage}
-                selected={vehiclesSelection.selected}
-                handleSuspend={vehicleContext?.suspendVehicle}
+                selected={productsSelection.selected}
+                // handleSuspend={vehicleContext?.suspendVehicle}
               />
             )}
           </Stack>

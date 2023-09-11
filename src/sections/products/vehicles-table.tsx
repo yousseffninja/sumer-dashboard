@@ -25,7 +25,7 @@ import { MenuButton } from "@/components/button-menu";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
-export const VehiclesTable = (props: any) => {
+export const ProductsTable = (props: any) => {
   const router = useRouter();
   const {
     count,
@@ -67,9 +67,13 @@ export const VehiclesTable = (props: any) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>{t("Vehicle")}</TableCell>
-                <TableCell>{t("Driver")}</TableCell>
-                <TableCell>{t("Created at")}</TableCell>
+                <TableCell>{t("Product Name")}</TableCell>
+                <TableCell>{t("Category")}</TableCell>
+                <TableCell>{t("Owner")}</TableCell>
+                <TableCell>{t("Price")}</TableCell>
+                <TableCell>{t("Size")}</TableCell>
+                <TableCell>{t("count")}</TableCell>
+                {/* <TableCell>{t("Created at")}</TableCell> */}
                 <TableCell>
                   <SvgIcon fontSize="small">
                     <CogIcon />
@@ -78,35 +82,33 @@ export const VehiclesTable = (props: any) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((vehicle: any) => {
-                const isSelected = selected.includes(vehicle.id);
-                const created_at = format(Date.parse(vehicle.created_at), "dd/MM/yyyy");
-                const deleted_at = vehicle.deleted_at
-                  ? format(Date.parse(vehicle.deleted_at), "dd/MM/yyyy")
-                  : null;
+              {items.map((product: any) => {
+                const isSelected = selected.includes(product._id);
+                // const created_at = format(Date.parse(vehicle.createAt), "dd/MM/yyyy");
+              
                 // const [checked, setChecked] = useState(vehicle.deleted_at);
                 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                   // setChecked(event.target.checked);
-                  handleSuspend(vehicle.id);
+                  handleSuspend(product.id);
                 };
 
-                const handleVehicleRoute = (event: React.ChangeEvent<HTMLInputElement>) => {
-                  router.push(`/vehicles-management/vehicle/${vehicle.id}`);
+                const handleProductRoute = (event: React.ChangeEvent<HTMLInputElement>) => {
+                  router.push(`/products/${product._id}`);
                 };
-                const handleDriverRoute = (event: React.ChangeEvent<HTMLInputElement>) => {
-                  router.push(`/users-management/users/${vehicle?.__user__.account}`);
+                const handleUser = () => {
+                  router.push(`/users/${product?.owner?._id}`);
                 };
 
                 return (
-                  <TableRow hover key={vehicle.id} selected={isSelected}>
+                  <TableRow hover key={product._id} selected={isSelected}>
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(vehicle.id);
+                            onSelectOne?.(product._id);
                           } else {
-                            onDeselectOne?.(vehicle.id);
+                            onDeselectOne?.(product._id);
                           }
                         }}
                       />
@@ -114,30 +116,39 @@ export const VehiclesTable = (props: any) => {
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Avatar
-                          src={"https://pronto.zbony.com/v1/" + vehicle?.__images__[0]?.image}
+                          src={product?.imageArray[0]?.ProductPhotoPerview}
                         >
-                          {getInitials(vehicle?.__images__[0]?.image ?? "NA")}
+                          {getInitials(product?.imageArray[0]?.ProductPhotoPerview ?? "NA")}
                         </Avatar>
                         <Typography variant="subtitle2">
-                          {`${vehicle.__brand__.name} (${vehicle?.__brand_model__?.name})`}
+                          {`${product.name} (${product?.name})`}
                         </Typography>
                       </Stack>
                     </TableCell>
                     <TableCell>
+                      {product?.category?.name}
+                    </TableCell>
+                    <TableCell>
                       <Link
-                        onClick={(event: any) => {
-                          handleDriverRoute(event);
-                        }}
-                        variant="button"
-                        underline="none"
-                        sx={{ cursor: "pointer" }}
+                        underline="hover"
+                        variant="subtitle2"
+                        onClick={handleUser}
                       >
-                        {vehicle?.__user__?.name}
+                        {product?.owner?.stockName}
                       </Link>
                     </TableCell>
-                    <TableCell>{created_at}</TableCell>
                     <TableCell>
-                      <MenuButton items={[{ label: "View", onClick: handleVehicleRoute }]} />
+                      {product?.price}
+                    </TableCell>
+                    <TableCell>
+                      {t(product?.size)}
+                    </TableCell>
+                    <TableCell>
+                      {product?.availabilityCount}
+                    </TableCell>
+                    {/* <TableCell>{created_at}</TableCell> */}
+                    <TableCell>
+                      <MenuButton items={[{ label: "View", onClick: handleProductRoute }]} />
                     </TableCell>
                   </TableRow>
                 );
@@ -159,7 +170,7 @@ export const VehiclesTable = (props: any) => {
   );
 };
 
-VehiclesTable.propTypes = {
+ProductsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,

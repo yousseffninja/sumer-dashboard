@@ -1,49 +1,43 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { Avatar, Box, SvgIcon, Typography } from "@mui/material";
-import { DashboardLayout } from "../../../layouts/dashboard/layout";
+import { DashboardLayout } from "../../layouts/dashboard/layout";
 
 import { useRouter } from "next/router";
 import { Container, Stack } from "@mui/system";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useTranslation } from "react-i18next";
 import { useVehicle } from "@/hooks/use-vehicles";
+import { useProduct } from "@/hooks/use-product";
 import { VehicleDetails } from "@/sections/products/vehicle-details";
 import { VehicleVerification } from "@/sections/products/vehicle-verification";
 import ImageGallery from "@/components/image-gallery";
 import VehicleContextProvider from "@/contexts/vehicle-context";
+import ProductReviews from "@/sections/products/product-reviews";
 
 const Page = () => {
   const { t } = useTranslation();
   const vehicleContext = useVehicle();
+  const productContext = useProduct();
   const router = useRouter();
   const [vehicle, setVehicle] = useState<any>();
   const [loading, setLoading] = useState(true);
 
-  const fetchVehicle = async () => {
-    if (typeof router.query.id === "string") {
-      await vehicleContext?.getVehicle(router.query.id);
+  const fetchProducts = async () => {
+    if (typeof router.query.productId === "string") {
+      await productContext?.fetchProduct(router.query.productId);
     }
   };
 
   useEffect(() => {
-    fetchVehicle();
-
-    
+    fetchProducts();
   }, []);
 
-  useEffect(() => {
-    setVehicle(vehicleContext?.selectedVehicle);
-    setLoading(false);
-  }, [vehicleContext?.selectedVehicle]);
-
-  const vehicleImages = vehicle?.__images__;
-  const licenseImages = vehicle?.__license_images__;
-  const galleryPath = "https://pronto.zbony.com/v1/";
+  const productImages = productContext?.selectedProduct?.imageArray
   return (
     <>
       <Head>
-        <title>Vehicle | Pronto</title>
+        <title>Product | Sumer</title>
       </Head>
       <Box
         component="main"
@@ -52,7 +46,7 @@ const Page = () => {
           py: 8,
         }}
       >
-        {!loading && vehicle && (
+        {productContext?.selectedProduct && (
           <Container maxWidth="lg">
             <Stack spacing={3}>
               <Stack
@@ -63,31 +57,31 @@ const Page = () => {
                 sx={{ m: 3 }}
               >
                 <Typography variant="h4">
-                  {vehicle.brand_model_id}
+                  {productContext?.selectedProduct.name}
                   <Typography variant="body2">
                     <SvgIcon fontSize="small" color="primary">
                       <SecurityIcon />
                     </SvgIcon>
-                    {t(vehicle.status)}
+                    {t(productContext?.selectedProduct?.desc)}
                   </Typography>
                 </Typography>
                 <Avatar sx={{ width: 150, height: 150 }}>
-                  {vehicle.__images__ && vehicle?.__images__[0] && (
+                  {productContext?.selectedProduct?.imageArray && (
                     <img
-                      src={"https://pronto.zbony.com/v1/" + vehicle?.__images__[0]?.image}
-                      alt={vehicle.brand_id}
+                      src={productContext?.selectedProduct?.imageArray[0]?.ProductPhotoPerview ?? ""}
+                      alt={vehicle?._id}
                       loading="lazy"
                       width={200}
                     />
                   )}
                 </Avatar>
               </Stack>
-              {vehicle.status == "INREVIEW" && <VehicleVerification vehicle={vehicle} />}
+              {productContext?.selectedProduct?.status == "INREVIEW" && <VehicleVerification vehicle={vehicle} />}
               <Box
                 sx={{ display: "flex", gap: "2rem" }}
                 flexDirection={{ md: "row", xs: "column" }}
               >
-                <VehicleDetails vehicle={vehicle} />
+                <VehicleDetails vehicle={productContext?.selectedProduct} />
                 <Box
                   sx={{
                     width: "100%",
@@ -98,18 +92,25 @@ const Page = () => {
                   }}
                 >
                   <ImageGallery
-                    path={galleryPath}
-                    imagesArray={vehicleImages}
+                    imagesArray={productImages}
                     cols={3}
-                    galleryTitle="Vehicle images"
-                  />
-                  <ImageGallery
-                    path={galleryPath}
-                    imagesArray={licenseImages}
-                    cols={3}
-                    galleryTitle="License Images"
+                    galleryTitle="Product images"
                   />
                 </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  width: "100%",
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                }}
+              >
+                {productContext?.productReviews && productContext?.productReviews.length > 0 && (
+                <ProductReviews reviews={productContext?.productReviews} />
+              )}
               </Box>
             </Stack>
           </Container>
