@@ -70,6 +70,7 @@ export const UsersTable = (props: any) => {
                 <TableCell>{t('#')}</TableCell>
                 <TableCell>{t('Name')}</TableCell>
                 <TableCell>{t('Phone')}</TableCell>
+                <TableCell>{t('role')}</TableCell>
                 <TableCell>{t('Created at')}</TableCell>
                 <TableCell>{t('Status')}</TableCell>
                 <TableCell>
@@ -82,10 +83,8 @@ export const UsersTable = (props: any) => {
             <TableBody>
               {items.map((user: any) => {
                 const isSelected = selected.includes(user.id);
-                const created_at = format(Date.parse(user.created_at), "dd/MM/yyyy");
-                const deleted_at = user.deleted_at
-                  ? format(Date.parse(user.deleted_at), "dd/MM/yyyy")
-                  : null;
+                const created_at = format(Date.parse(user.createdAt), "dd/MM/yyyy");
+              
                 // const [checked, setChecked] = useState(user.deleted_at);
                 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                   // setChecked(event.target.checked);
@@ -94,11 +93,11 @@ export const UsersTable = (props: any) => {
                 
                 const handleRoute = (event: React.ChangeEvent<HTMLInputElement>) => {
                   if(isAdmin){
-                    router.push(`/admins/${user.id}`);
+                    router.push(`/users/${user._id}`);
                   }
                   else{
 
-                    router.push(`/users-management/users/${user.account}`);
+                    router.push(`/users/${user._id}`);
                   }
                 };
                 const handleRouteEdit = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,23 +118,17 @@ export const UsersTable = (props: any) => {
                         }}
                       />
                     </TableCell>
-                    <TableCell>{user.account}</TableCell>
+                    <TableCell>{user._id}</TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={user.avatar}>{getInitials(user.name)}</Avatar>
+                        <Avatar src={user.userPhoto}>{getInitials(user.name)}</Avatar>
                         <Typography variant="subtitle2">{user.name}</Typography>
                       </Stack>
                     </TableCell>
                     <TableCell><span  style={{display: "flex",flexDirection: "row-reverse",direction: "ltr"}}>{user.phone}</span></TableCell>
+                    <TableCell>{t(user.role)}</TableCell>
                     <TableCell>{created_at}</TableCell>
-                    <TableCell>
-                      <Switch
-                        checked={user.deleted_at == null}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "controlled" }}
-                        />
-                      {deleted_at}
-                    </TableCell>
+                    <TableCell><Typography sx={{ color: user.emailActive === true ? "green" : "red" }}>{t(user.emailActive === true ? "Active" : "Inactive")}</Typography></TableCell>
                         <TableCell>
                           <MenuButton 
                             items={isAdmin?[

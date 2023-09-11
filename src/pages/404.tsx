@@ -8,7 +8,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        404 | Pronto
+        404 | Sumer
       </title>
     </Head>
     <Box

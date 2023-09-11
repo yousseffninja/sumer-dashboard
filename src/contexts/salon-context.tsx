@@ -46,7 +46,7 @@ export const SalonProvider = ({ children }: any) => {
   )
 }
 
-export default  SalonProvider
+export default  SalonProvider;
 
 export type salonContextType = {
   fetchSalons: (page: number, rowsPerPage: number, filter?:Filter[]) => void;

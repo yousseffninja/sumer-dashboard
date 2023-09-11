@@ -45,12 +45,12 @@ export const UserDetails = (props: any) => {
     },
   ];
 
-  const addressesList = user.__addresses__
-    ? user.__addresses__.map((address: any, index: number) => {
+  const addressesList = user.addresses
+    ? user.addresses.map((address: any, index: number) => {
         return {
           icon: index + 1,
-          label: address.name,
-          value: address.address,
+          label: address.area,
+          value: address.street,
         };
       })
     : [];
@@ -59,7 +59,7 @@ export const UserDetails = (props: any) => {
   return (
     <div>
       <Card>
-        <CardHeader subheader={"#" + user.account} title={user.name} />
+        <CardHeader subheader={"#" + user._id} title={user.name} />
         <Divider />
         <CardContent>
           <Grid container spacing={12} wrap="wrap">

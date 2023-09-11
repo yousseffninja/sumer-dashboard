@@ -11,6 +11,11 @@ function buildQueryString(params: Filter[]) {
   return `&${queryString}`;
 }
 
+
+// Users API
+export const get_users = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/users?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+export const get_user = (id: string) => `/users/${id}`;
+
 // Product API
 export const get_products = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/products?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 export const get_invoices = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `products/invoices?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`

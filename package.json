@@ -1,9 +1,9 @@
 {
   "name": "dashboard-nextjs",
   "version": "1.0.0",
-  "author": "alexapps",
+  "author": "Hexasoft Solutions",
   "licence": "MIT",
-  "homepage": "https://alexforprog.com",
+  "homepage": "https://hexasoft.noxus-solutions.com/",
   "private": false,
   "scripts": {
     "dev": "next",

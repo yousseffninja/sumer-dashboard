@@ -28,8 +28,8 @@ const Page = () => {
   const [method, setMethod] = useState('username');
   const formik = useFormik({
     initialValues: {
-      username: 'admin',
-      password: 'Password123!',
+      username: 'Yousseffmohamedd22@gmail.com',
+      password: 'Test@01022',
       submit: null
     },
     validationSchema: Yup.object({
@@ -73,7 +73,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          {t("Login")} | Pronto
+          {t("Login")} | Sumer
         </title>
       </Head>
       <Box
