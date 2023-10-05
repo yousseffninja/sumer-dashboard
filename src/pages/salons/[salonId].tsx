@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 import { Container, Stack } from "@mui/system";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useTranslation } from "react-i18next";
-import { useVehicle } from "@/hooks/use-vehicles";
 import { useProduct } from "@/hooks/use-product";
+import { useSalon } from "@/hooks/use-salon";
 import { VehicleDetails } from "@/sections/products/vehicle-details";
 import { VehicleVerification } from "@/sections/products/vehicle-verification";
 import ImageGallery from "@/components/image-gallery";
@@ -17,10 +17,9 @@ import ProductReviews from "@/sections/products/product-reviews";
 
 const Page = () => {
   const { t } = useTranslation();
-  const vehicleContext = useVehicle();
   const productContext = useProduct();
+  const salonContext = useSalon();
   const router = useRouter();
-  const [vehicle, setVehicle] = useState<any>();
   const [loading, setLoading] = useState(true);
 
   const fetchProducts = async () => {
@@ -29,15 +28,22 @@ const Page = () => {
     }
   };
 
+  const fetchSalon = async () => {
+    if (typeof router.query.salonId === "string") {
+      await salonContext?.fetchSalon(router.query.salonId);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchSalon();
   }, []);
 
   const productImages = productContext?.selectedProduct?.imageArray
   return (
     <>
       <Head>
-        <title>Product | Sumer</title>
+        <title>Salons | Sumer</title>
       </Head>
       <Box
         component="main"
@@ -46,7 +52,7 @@ const Page = () => {
           py: 8,
         }}
       >
-        {productContext?.selectedProduct && (
+        {salonContext?.salon && (
           <Container maxWidth="lg">
             <Stack spacing={3}>
               <Stack
@@ -57,28 +63,27 @@ const Page = () => {
                 sx={{ m: 3 }}
               >
                 <Typography variant="h4">
-                  {productContext?.selectedProduct.name}
+                  {salonContext?.salon?.name}
                   <Typography variant="body2">
-                    {t(productContext?.selectedProduct?.desc)}
+                    {t(salonContext?.salon?.about)}
                   </Typography>
                 </Typography>
                 <Avatar sx={{ width: 150, height: 150 }}>
-                  {productContext?.selectedProduct?.imageArray && (
+                  {salonContext?.salon?.salonPhoto && (
                     <img
-                      src={productContext?.selectedProduct?.imageArray[0]?.ProductPhotoPerview ?? ""}
-                      alt={vehicle?._id}
+                      src={salonContext?.salon?.salonPhoto ?? ""}
                       loading="lazy"
                       width={200}
                     />
                   )}
                 </Avatar>
               </Stack>
-              {productContext?.selectedProduct?.status == "INREVIEW" && <VehicleVerification vehicle={vehicle} />}
+              {/* {productContext?.selectedProduct?.status == "INREVIEW" && <VehicleVerification vehicle={vehicle} />} */}
               <Box
                 sx={{ display: "flex", gap: "2rem" }}
                 flexDirection={{ md: "row", xs: "column" }}
               >
-                <VehicleDetails vehicle={productContext?.selectedProduct} />
+                <VehicleDetails vehicle={salonContext?.salon} />
                 <Box
                   sx={{
                     width: "100%",

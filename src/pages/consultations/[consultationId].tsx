@@ -2,25 +2,26 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { Avatar, Box, SvgIcon, Typography } from "@mui/material";
 import { DashboardLayout } from "../../layouts/dashboard/layout";
-
 import { useRouter } from "next/router";
 import { Container, Stack } from "@mui/system";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useTranslation } from "react-i18next";
-import { useVehicle } from "@/hooks/use-vehicles";
 import { useProduct } from "@/hooks/use-product";
-import { VehicleDetails } from "@/sections/products/vehicle-details";
+import { useSalon } from "@/hooks/use-salon";
+import { useConsultation } from "@/hooks/use-consultation";
+import { ConsultationDetails } from "@/sections/consultations/consultation-details";
 import { VehicleVerification } from "@/sections/products/vehicle-verification";
 import ImageGallery from "@/components/image-gallery";
+import ImageGalleryCertificates from "@/sections/consultations/consultations-certificates";
 import VehicleContextProvider from "@/contexts/vehicle-context";
 import ProductReviews from "@/sections/products/product-reviews";
 
 const Page = () => {
   const { t } = useTranslation();
-  const vehicleContext = useVehicle();
   const productContext = useProduct();
+  const salonContext = useSalon();
+  const consultationContext = useConsultation();
   const router = useRouter();
-  const [vehicle, setVehicle] = useState<any>();
   const [loading, setLoading] = useState(true);
 
   const fetchProducts = async () => {
@@ -29,15 +30,33 @@ const Page = () => {
     }
   };
 
+  const fetchSalon = async () => {
+    if (typeof router.query.salonId === "string") {
+      await salonContext?.fetchSalon(router.query.salonId);
+    }
+  };
+
+  const fetchConsultation = async () => {
+    if (typeof router.query.consultationId === "string") {
+      await consultationContext?.fetchConsultation(router.query.consultationId);
+    }
+  }
+
   useEffect(() => {
     fetchProducts();
+    fetchSalon();
+    fetchConsultation();
   }, []);
 
   const productImages = productContext?.selectedProduct?.imageArray
+  const serviceImages = consultationContext?.consultation?.service?.map((service: any) => ({
+    certificatePhoto: service.servicePhoto,
+    title: service.name
+  }));  
   return (
     <>
       <Head>
-        <title>Product | Sumer</title>
+        <title>Consultation | Sumer</title>
       </Head>
       <Box
         component="main"
@@ -46,7 +65,7 @@ const Page = () => {
           py: 8,
         }}
       >
-        {productContext?.selectedProduct && (
+        {consultationContext?.consultation && (
           <Container maxWidth="lg">
             <Stack spacing={3}>
               <Stack
@@ -57,28 +76,27 @@ const Page = () => {
                 sx={{ m: 3 }}
               >
                 <Typography variant="h4">
-                  {productContext?.selectedProduct.name}
+                  {consultationContext?.consultation?.owner?.name}
                   <Typography variant="body2">
-                    {t(productContext?.selectedProduct?.desc)}
+                    {t(consultationContext?.consultation?.Specialization)}
                   </Typography>
                 </Typography>
                 <Avatar sx={{ width: 150, height: 150 }}>
-                  {productContext?.selectedProduct?.imageArray && (
+                  {consultationContext?.consultation?.owner?.userPhoto && (
                     <img
-                      src={productContext?.selectedProduct?.imageArray[0]?.ProductPhotoPerview ?? ""}
-                      alt={vehicle?._id}
+                      src={consultationContext?.consultation?.owner?.userPhoto ?? ""}
                       loading="lazy"
                       width={200}
                     />
                   )}
                 </Avatar>
               </Stack>
-              {productContext?.selectedProduct?.status == "INREVIEW" && <VehicleVerification vehicle={vehicle} />}
+              {/* {productContext?.selectedProduct?.status == "INREVIEW" && <VehicleVerification vehicle={vehicle} />} */}
               <Box
                 sx={{ display: "flex", gap: "2rem" }}
                 flexDirection={{ md: "row", xs: "column" }}
               >
-                <VehicleDetails vehicle={productContext?.selectedProduct} />
+                <ConsultationDetails vehicle={consultationContext?.consultation} />
                 <Box
                   sx={{
                     width: "100%",
@@ -88,10 +106,15 @@ const Page = () => {
                     gap: 1,
                   }}
                 >
-                  <ImageGallery
-                    imagesArray={productImages}
+                  <ImageGalleryCertificates
+                    imagesArray={consultationContext?.consultation?.certificates}
                     cols={3}
-                    galleryTitle="Product images"
+                    galleryTitle="Cerificates images"
+                  />
+                  <ImageGalleryCertificates
+                    imagesArray={serviceImages}
+                    cols={3}
+                    galleryTitle="Services images"
                   />
                 </Box>
               </Box>

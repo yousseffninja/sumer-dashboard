@@ -24,7 +24,7 @@ import AdjustIcon from "@mui/icons-material/Adjust";
 
 import { useTranslation } from "react-i18next";
 
-export const VehicleDetails = (props: any) => {
+export const ConsultationDetails = (props: any) => {
   const { t } = useTranslation();
   const { vehicle } = props;
 
@@ -39,7 +39,7 @@ export const VehicleDetails = (props: any) => {
         </SvgIcon>
       ),
       label: t("name"),
-      value: vehicle?.name,
+      value: vehicle?.owner?.name,
     },
     {
       icon: (
@@ -47,29 +47,8 @@ export const VehicleDetails = (props: any) => {
           <AdjustIcon />
         </SvgIcon>
       ),
-      label: t("Model"),
-      value: vehicle?.brand,
-    },
-    {
-      icon: (
-        <SvgIcon fontSize="small" >
-          <FormatColorFillIcon  />
-        </SvgIcon>
-      ),
-      label: t("Color"),
-      value: (
-        <Box>
-          {vehicle && vehicle.color && vehicle.color[0] ? (
-            vehicle.color.map((color: any, index: number) => (
-              <>
-                <input type="color" value={color} disabled readOnly />
-              </>
-            ))
-          ) : (
-            "N/A" 
-          )}
-        </Box>
-      ),
+      label: t("Consultation Specialization"),
+      value: vehicle?.Specialization,
     },
     {
       icon: (
@@ -78,7 +57,7 @@ export const VehicleDetails = (props: any) => {
         </SvgIcon>
       ),
       label: t("description"),
-      value: vehicle?.desc,
+      value: vehicle?.about,
     },
     {
       icon: (
@@ -86,8 +65,8 @@ export const VehicleDetails = (props: any) => {
           <LocalOfferIcon />
         </SvgIcon>
       ),
-      label: t("count"),
-      value: vehicle?.availabilityCount,
+      label: t("balance"),
+      value: vehicle?.balance,
     },
     {
       icon: (
@@ -97,15 +76,6 @@ export const VehicleDetails = (props: any) => {
       ),
       label: t("Price"),
       value: vehicle?.price,
-    },
-    {
-      icon: (
-        <SvgIcon fontSize="small">
-          <Man3Icon />
-        </SvgIcon>
-      ),
-      label: t("Category"),
-      value: vehicle?.category?.name,
     },
   ];
 
@@ -129,6 +99,6 @@ export const VehicleDetails = (props: any) => {
   );
 };
 
-VehicleDetails.prototype = {
+ConsultationDetails.prototype = {
   vehicle: PropTypes.object,
 };

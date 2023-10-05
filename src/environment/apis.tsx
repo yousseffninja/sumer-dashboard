@@ -24,9 +24,11 @@ export const get_invoices = (page: number = 1, rowsPerPage: number = 10, filter?
 // Salon API
 export const get_salons = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/salons?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 export const get_salon_booking = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/salonBooking/?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+export const get_salon = (id: string) => `/salons/${id}`;
 
 // Salon API
 export const get_consultations = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/consultation?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+export const get_consultation = (id: string) => `/consultation/${id}`;
 export const get_constlant = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/consultation/consltant?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 
 // Admins API
