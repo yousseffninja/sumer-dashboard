@@ -71,6 +71,7 @@ export const UsersTable = (props: any) => {
                 <TableCell>{t('Name')}</TableCell>
                 <TableCell>{t('Phone')}</TableCell>
                 <TableCell>{t('role')}</TableCell>
+                <TableCell>{t('balance')}</TableCell>
                 <TableCell>{t('Created at')}</TableCell>
                 <TableCell>{t('Status')}</TableCell>
                 <TableCell>
@@ -127,6 +128,7 @@ export const UsersTable = (props: any) => {
                     </TableCell>
                     <TableCell><span  style={{display: "flex",flexDirection: "row-reverse",direction: "ltr"}}>{user.phone}</span></TableCell>
                     <TableCell>{t(user.role)}</TableCell>
+                    <TableCell>{t(user.balance)}</TableCell>
                     <TableCell>{created_at}</TableCell>
                     <TableCell><Typography sx={{ color: user.emailActive === true ? "green" : "red" }}>{t(user.emailActive === true ? "Active" : "Inactive")}</Typography></TableCell>
                         <TableCell>
