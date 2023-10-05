@@ -84,7 +84,6 @@ export const items = [
     ),
   },
   {
-    //transactions
     external: false,
     disabled: false,
     menu: false,
@@ -95,5 +94,18 @@ export const items = [
         <HomeIcon />
       </SvgIcon>
     ),
+  },
+  {
+    external: false,
+    disabled: false,
+    menu: false,
+    title: "Vouchers",
+    path: "/vouchers",
+    icon: (
+      <SvgIcon fontSize="small">
+        <HomeIcon />
+      </SvgIcon>
+    ),
   }
+  
 ];

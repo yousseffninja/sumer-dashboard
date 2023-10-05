@@ -11,7 +11,6 @@ function buildQueryString(params: Filter[]) {
   return `&${queryString}`;
 }
 
-
 // Users API
 export const get_users = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/users?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 export const get_user = (id: string) => `/users/${id}`;
@@ -31,6 +30,11 @@ export const get_salon = (id: string) => `/salons/${id}`;
 export const get_consultations = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/consultation?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
 export const get_consultation = (id: string) => `/consultation/${id}`;
 export const get_constlant = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/consultation/consltant?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+
+// Voucher API
+export const get_vouchers = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/discountVouchers?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+export const get_voucher = (id: string) => `/discountVouchers/${id}`;
+export const create_voucher = () => `/discountVouchers`;
 
 // Admins API
 export const get_admin = (id: string) => `/admins/${id}`;

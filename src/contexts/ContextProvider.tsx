@@ -10,6 +10,7 @@ import ProductProvider from '@/contexts/product-context';
 import SalonProvider from '@/contexts/salon-context';
 import ConsultationContext  from "./consultation-context";
 import UserContext from "./users-context";
+import VoucherProvider from "./voucher-context";
 
 const ContextProvider = ({ children }: any) => {
   return (
@@ -23,9 +24,11 @@ const ContextProvider = ({ children }: any) => {
                   <ProductProvider>
                     <SalonProvider>
                       <ConsultationContext>
-                        <UserContext>
-                          <AuthProvider>{children}</AuthProvider>
-                        </UserContext>
+                        <VoucherProvider>
+                          <UserContext>
+                            <AuthProvider>{children}</AuthProvider>
+                          </UserContext>
+                        </VoucherProvider>
                       </ConsultationContext>
                     </SalonProvider>
                   </ProductProvider>
