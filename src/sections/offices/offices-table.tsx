@@ -67,11 +67,9 @@ export const OfficesTable = (props: any) => {
                   />
                 </TableCell>
                 <TableCell>{t('#')}</TableCell>
-                <TableCell>{t('Administrator Name')}</TableCell>
-                <TableCell>{t('Office Code')}</TableCell>
-                <TableCell>{t('Office Name')}</TableCell>
-                <TableCell>{t('Status')}</TableCell>
-                <TableCell>{t('Created at')}</TableCell>
+                <TableCell>{t('Salon Name')}</TableCell>
+                <TableCell>{t('Salon Phone Number')}</TableCell>
+                <TableCell>{t('Salon Price PPer Houre')}</TableCell>
                 <TableCell>
                   <SvgIcon fontSize="small">
                     <CogIcon />
@@ -80,59 +78,39 @@ export const OfficesTable = (props: any) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((office: any) => {
-                const isSelected = selected.includes(office.id);
-                const created_at = office.created_at? format(Date.parse(office.created_at), "dd/MM/yyyy") : null;
-                const deleted_at = office.deleted_at
-                  ? format(Date.parse(office.deleted_at), "dd/MM/yyyy")
-                  : null;
-                // const [checked, setChecked] = useState(office.deleted_at);
-                const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-                  // setChecked(event.target.checked);
-                  handleSuspend(office.id);
-                };
-                
+              {items.map((salon: any) => {
+                const isSelected = selected.includes(salon._id);
+                const created_at = salon.createdAt? format(Date.parse(salon.createdAt), "dd/MM/yyyy") : null;
+          
                 const handleRoute = (event: React.ChangeEvent<HTMLInputElement>) => {
-                  router.push(`offices/${office.id}`);
+                  router.push(`salons/${salon._id}`);
                 };
 
                 return (
-                  <TableRow hover key={office.id} selected={isSelected}>
+                  <TableRow hover key={salon.id} selected={isSelected}>
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={(event) =>  {
                           if (event.target.checked) {
-                            onSelectOne?.(office.id);
+                            onSelectOne?.(salon._id);
                           } else {
-                            onDeselectOne?.(office.id);
+                            onDeselectOne?.(salon._id);
                           }
                         }}
                       />
                     </TableCell>
-                    <TableCell>{office.account}</TableCell>
+                    <TableCell>{salon._id}</TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={office.avatar}>{getInitials(office.name)}</Avatar>
-                        <Typography variant="subtitle2">{office.name}</Typography>
+                        <Avatar src={salon.salonPhoto}>{getInitials(salon.name)}</Avatar>
+                        <Typography variant="subtitle2">{salon.name}</Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{office["shipping_office"].code}</TableCell>
+                    <TableCell>{salon.phone}</TableCell>
                     <TableCell>
-                  {  office["shipping_office"].name}
+                  {  salon.pricePerHour}
                     </TableCell>
-                   
-                    <TableCell>
-                      <Switch
-                        checked={office.deleted_at == null}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "controlled" }}
-                        />
-                      {deleted_at}
-                    </TableCell>
-                      <TableCell>
-                    { created_at}
-                      </TableCell>
                         <TableCell>
                           <MenuButton 
                             items={[

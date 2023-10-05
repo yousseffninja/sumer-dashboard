@@ -87,8 +87,7 @@ const Page = () => {
   };
 
   useEffect(() => {
-    sa
-    s?.fetchOffices(controller.page, controller.rowsPerPage,controller.filter);
+    SalonContext?.fetchSalons(controller.page, controller.rowsPerPage, controller.filter);
     
   }, [controller]);
 
@@ -112,22 +111,20 @@ const Page = () => {
               </Stack>
             </Stack>
             <OfficesSearch onSearchChange={handleSearch} />
-            {(OfficeContext == undefined || OfficeContext?.count > 0) && (
-              <OfficesTable
-                count={OfficeContext?.count}
-                items={OfficeContext?.offices}
-                onDeselectAll={officesSelection.handleDeselectAll}
-                onDeselectOne={officesSelection.handleDeselectOne}
+            <OfficesTable
+                count={SalonContext?.count}
+                items={SalonContext?.salons}
+                onDeselectAll={salonsSelection.handleDeselectAll}
+                onDeselectOne={salonsSelection.handleDeselectOne}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
-                onSelectAll={officesSelection.handleSelectAll}
-                onSelectOne={officesSelection.handleSelectOne}
+                onSelectAll={salonsSelection.handleSelectAll}
+                onSelectOne={salonsSelection.handleSelectOne}
                 page={controller.page}
                 rowsPerPage={controller.rowsPerPage}
                 selected={officesSelection.selected}
-                handleSuspend={OfficeContext?.suspendOffice}
+                // handleSuspend={OfficeContext?.suspendOffice}
               />
-            )}
           </Stack>
         </Container>
       </Box>
