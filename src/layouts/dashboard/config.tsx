@@ -83,4 +83,17 @@ export const items = [
       </SvgIcon>
     ),
   },
+  {
+    //transactions
+    external: false,
+    disabled: false,
+    menu: false,
+    title: "Invoices",
+    path: "/invoices",
+    icon: (
+      <SvgIcon fontSize="small">
+        <HomeIcon />
+      </SvgIcon>
+    ),
+  }
 ];

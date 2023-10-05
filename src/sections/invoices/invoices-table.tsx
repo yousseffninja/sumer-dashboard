@@ -16,6 +16,14 @@ import {
   TableRow,
   Typography,
   Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Button,
+  MenuItem,
+  FormControl,
+  Select,
+  DialogActions,
 } from "@mui/material";
 import React from "react";
 import { Scrollbar } from "../../components/scrollbar";
@@ -25,7 +33,7 @@ import { MenuButton } from "@/components/button-menu";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
-export const ProductsTable = (props: any) => {
+export const IvoicesTable = (props: any) => {
   const router = useRouter();
   const {
     count,
@@ -40,7 +48,30 @@ export const ProductsTable = (props: any) => {
     handleSuspend = () => {},
     rowsPerPage,
     selected,
+    selectedRole,
+    setSelectedRole
   } = props;
+
+  const [filterOpen, setFilterOpen] = React.useState(false);
+
+  const handleOpenFilter = () => {
+    setFilterOpen(true);
+  };
+
+  const handleCloseFilter = () => {
+    setFilterOpen(false);
+  };
+
+  const handleApplyFilter = () => {
+    // Apply the filter logic here based on the selectedRole
+    // You may want to call a callback function to update the filtered data
+    // For now, let's just close the filter modal
+    handleCloseFilter();
+  };
+
+  const handleRoleChange = (event: any) => {
+    setSelectedRole(event.target.value as string);
+  };
 
   const { t } = useTranslation();
 
@@ -51,6 +82,43 @@ export const ProductsTable = (props: any) => {
     <Card>
       <Scrollbar>
         <Box sx={{ minWidth: 800 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem' }}>
+        <Button variant="outlined" onClick={handleOpenFilter}>
+          {t('Filter by Date')}
+        </Button>
+      </Box>
+
+      {/* Filter Modal */}
+      <Dialog open={filterOpen} onClose={handleCloseFilter}>
+        <DialogTitle>{t('Date Filter')}</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth>
+            <Select
+              value={selectedRole}
+              onChange={handleRoleChange}
+              displayEmpty
+              fullWidth
+            >
+              <MenuItem value="">
+                <em>{t('All Dates')}</em>
+              </MenuItem>
+              <MenuItem value="today">{t('Today')}</MenuItem>
+              <MenuItem value="week">{t('This Week')}</MenuItem>
+              <MenuItem value="month">{t('This Month')}</MenuItem>
+              <MenuItem value="year">{t('This Year')}</MenuItem>
+              {/* Add more roles as needed */}
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseFilter} color="primary">
+            {t('Cancel')}
+          </Button>
+          <Button onClick={handleApplyFilter} color="primary">
+            {t('Apply')}
+          </Button>
+        </DialogActions>
+      </Dialog>
           <Table>
             <TableHead>
               <TableRow>
@@ -67,12 +135,9 @@ export const ProductsTable = (props: any) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>{t("Product Name")}</TableCell>
-                <TableCell>{t("Category")}</TableCell>
-                <TableCell>{t("Owner")}</TableCell>
-                <TableCell>{t("Price")}</TableCell>
-                <TableCell>{t("Size")}</TableCell>
-                <TableCell>{t("count")}</TableCell>
+                <TableCell>{t("Invoice Number")}</TableCell>
+                <TableCell>{t("total amount")}</TableCell>
+                <TableCell>{t("status")}</TableCell>
                 {/* <TableCell>{t("Created at")}</TableCell> */}
                 <TableCell>
                   <SvgIcon fontSize="small">
@@ -93,7 +158,7 @@ export const ProductsTable = (props: any) => {
                 };
 
                 const handleProductRoute = (event: React.ChangeEvent<HTMLInputElement>) => {
-                  router.push(`/products/${product._id}`);
+                  router.push(`/invoices/${product._id}`);
                 };
                 const handleUser = () => {
                   router.push(`/users/${product?.owner?._id}`);
@@ -115,38 +180,17 @@ export const ProductsTable = (props: any) => {
                     </TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar
-                          src={product?.imageArray[0]?.ProductPhotoPerview}
-                        >
-                          {getInitials(product?.imageArray[0]?.ProductPhotoPerview ?? "NA")}
-                        </Avatar>
                         <Typography variant="subtitle2">
-                          {`${product.name} (${product?.name})`}
+                          {`${product.invoiceId}`}
                         </Typography>
                       </Stack>
                     </TableCell>
                     <TableCell>
-                      {product?.category?.name}
+                      {product?.totalAmount}
                     </TableCell>
                     <TableCell>
-                      <Link
-                        underline="hover"
-                        variant="subtitle2"
-                        onClick={handleUser}
-                      >
-                        {product?.owner?.name}
-                      </Link>
+                      {t(product?.transactions[0]?.status[product?.transactions[0]?.status.length - 1]?.status)}
                     </TableCell>
-                    <TableCell>
-                      {product?.price}
-                    </TableCell>
-                    <TableCell>
-                      {t(product?.size)}
-                    </TableCell>
-                    <TableCell>
-                      {product?.availabilityCount}
-                    </TableCell>
-                    {/* <TableCell>{created_at}</TableCell> */}
                     <TableCell>
                       <MenuButton items={[{ label: "View", onClick: handleProductRoute }]} />
                     </TableCell>
@@ -170,7 +214,7 @@ export const ProductsTable = (props: any) => {
   );
 };
 
-ProductsTable.propTypes = {
+IvoicesTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,
@@ -183,4 +227,6 @@ ProductsTable.propTypes = {
   handleSuspend: PropTypes.func,
   rowsPerPage: PropTypes.number,
   selected: PropTypes.array,
+  selectedRole: PropTypes.string,
+  setSelectedRole: PropTypes.func,
 };

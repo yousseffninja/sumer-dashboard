@@ -1,20 +1,26 @@
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
-  Stack,
-  SvgIcon,
-  Switch,
   Table,
   TableBody,
-  TableCell,
   TableHead,
-  TablePagination,
   TableRow,
-  Typography
+  TableCell,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  FormControl,
+  Select,
+  MenuItem,
+  SvgIcon,
+  Stack,
+  TablePagination,
+  Avatar,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Scrollbar } from '../../components/scrollbar';
@@ -39,8 +45,31 @@ export const UsersTable = (props: any) => {
     handleSuspend = () => {},
     rowsPerPage,
     selected,
+    setSelectedRole,
+    selectedRole,
     isAdmin=false
   } = props;
+
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const handleOpenFilter = () => {
+    setFilterOpen(true);
+  };
+
+  const handleCloseFilter = () => {
+    setFilterOpen(false);
+  };
+
+  const handleApplyFilter = () => {
+    // Apply the filter logic here based on the selectedRole
+    // You may want to call a callback function to update the filtered data
+    // For now, let's just close the filter modal
+    handleCloseFilter();
+  };
+
+  const handleRoleChange = (event: any) => {
+    setSelectedRole(event.target.value as string);
+  };
 
   const {t} = useTranslation();
 
@@ -51,10 +80,47 @@ export const UsersTable = (props: any) => {
     <Card>
       <Scrollbar>
         <Box sx={{ minWidth: 800 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem' }}>
+        <Button variant="outlined" onClick={handleOpenFilter}>
+          {t('Filter by Role')}
+        </Button>
+      </Box>
+
+      {/* Filter Modal */}
+      <Dialog open={filterOpen} onClose={handleCloseFilter}>
+        <DialogTitle>{t('Role Filter')}</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth>
+            <Select
+              value={selectedRole}
+              onChange={handleRoleChange}
+              displayEmpty
+              fullWidth
+            >
+              <MenuItem value="">
+                <em>{t('All Roles')}</em>
+              </MenuItem>
+              <MenuItem value="admin">{t('admin')}</MenuItem>
+              <MenuItem value="individual">{t('individual')}</MenuItem>
+              <MenuItem value="salon service">{t('salon service')}</MenuItem>
+              <MenuItem value="consultant">{t('consultant')}</MenuItem>
+              {/* Add more roles as needed */}
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseFilter} color="primary">
+            {t('Cancel')}
+          </Button>
+          <Button onClick={handleApplyFilter} color="primary">
+            {t('Apply')}
+          </Button>
+        </DialogActions>
+      </Dialog>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
+                {/* <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedAll}
                     indeterminate={selectedSome}
@@ -66,7 +132,7 @@ export const UsersTable = (props: any) => {
                       }
                     }}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell>{t('#')}</TableCell>
                 <TableCell>{t('Name')}</TableCell>
                 <TableCell>{t('Phone')}</TableCell>
@@ -107,7 +173,7 @@ export const UsersTable = (props: any) => {
 
                 return (
                   <TableRow hover key={user.id} selected={isSelected}>
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={(event) =>  {
@@ -118,7 +184,7 @@ export const UsersTable = (props: any) => {
                           }
                         }}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>{user._id}</TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
@@ -177,5 +243,7 @@ UsersTable.propTypes = {
   handleSuspend: PropTypes.func,
   rowsPerPage: PropTypes.number,
   isAdmin: PropTypes.any,
-  selected: PropTypes.array
+  selected: PropTypes.array,
+  setSelectedRole: PropTypes.func,
+  selectedRole: PropTypes.string
 };

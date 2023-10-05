@@ -28,6 +28,8 @@ const Page = () => {
     }],
   });
 
+  const [selectedRole, setSelectedRole] = useState('');
+
   const clientsIds: any[] | undefined = useMemo(
     () => clientContext?.clients.map((client: any) => client.id),
     [clientContext?.clients]
@@ -35,7 +37,7 @@ const Page = () => {
   const clientsSelection = useSelection(clientsIds);
 
   const usersIds: any[] | undefined = useMemo(
-    () => userContext?.users.map((user: any) => user.id),
+    () => userContext?.users.map((user: any) => user._id),
     [userContext?.users]
   );
   const usersSelection = useSelection(usersIds);
@@ -76,8 +78,49 @@ const Page = () => {
   };
 
   useEffect(() => {
-    userContext?.fetchUsers(controller.page, controller.rowsPerPage);  
+    userContext?.fetchUsers(controller.page, controller.rowsPerPage, controller.filter);  
   }, [controller]);
+
+  useEffect(() => {
+    if (selectedRole === "admin") {
+      setController({
+        ...controller,
+        filter: [{
+          key: "role",
+          value: "admin"
+        }]
+      });
+    } else if (selectedRole === "individual") {
+      setController({
+        ...controller,
+        filter: [{
+          key: "role",
+          value: "individual"
+        }]
+      });
+    } else if (selectedRole === "salon service") {
+      setController({
+        ...controller,
+        filter: [{
+          key: "role",
+          value: "salon service"
+        }]
+      });
+    } else if (selectedRole === "consultant") {
+      setController({
+        ...controller,
+        filter: [{
+          key: "role",
+          value: "consultant"
+        }]
+      });
+    } else {
+      setController({
+        ...controller,
+        filter: []
+      });
+    }
+  }, [selectedRole]);
 
   return (
     <>
@@ -110,7 +153,7 @@ const Page = () => {
                 </Button> */}
               </div>
             </Stack>
-            <UsersSearch onSearchChange={handleSearch} filter={controller?.filter[0].value} />
+            {/* <UsersSearch onSearchChange={handleSearch} filter={controller?.filter[0].value} /> */}
             {(userContext == undefined || userContext?.count > 0) && (
               <UsersTable
                 count={userContext?.count}
@@ -125,6 +168,8 @@ const Page = () => {
                 rowsPerPage={controller.rowsPerPage}
                 selected={usersSelection.selected}
                 handleSuspend={clientContext?.suspendClient}
+                setSelectedRole={setSelectedRole}
+                selectedRole={selectedRole}
               />
             )}
           </Stack>
