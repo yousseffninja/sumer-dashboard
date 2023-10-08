@@ -14,7 +14,9 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  SvgIcon
+  SvgIcon,
+  Menu,
+  MenuItem
 } from '@mui/material';
 import React from 'react';
 import { useTranslation } from "react-i18next";
@@ -47,6 +49,23 @@ export const OverviewConsultations = (props: any) => {
     interface IData {
       created_at: string;
     }
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDetailsClick = () => {
+    // Handle the "Details" click here
+    // You can navigate to the details page or show more information as needed
+    // Example: history.push('/details'); or setOpenDetailsDialog(true);
+    handleClose();
+  };
 
   return (
     <Card sx={sx}>
@@ -91,11 +110,18 @@ export const OverviewConsultations = (props: any) => {
                 primaryTypographyProps={{ variant: 'subtitle1' }}
                 secondaryTypographyProps={{ variant: 'body2' }}
               />
-              <IconButton edge="end">
+              <IconButton edge="end" onClick={handleClick}>
                 <SvgIcon>
                   <EllipsisVerticalIcon />
                 </SvgIcon>
               </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => router.push(`consultations/${consultation._id}`)}>{t("Details")}</MenuItem>
+              </Menu>
             </ListItem>
           );
         })}

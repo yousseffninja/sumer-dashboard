@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 import { Filter } from '@/@types/filter';
 import axiosClient from '@/configs/axios-client';
-import { get_invoices, get_products, get_product, get_invoice } from '@/environment/apis';
+import { get_invoices, get_products, get_product, get_invoice, get_products_transactions } from '@/environment/apis';
 
 export const ProductContext = createContext<productContextType | undefined>(undefined)
 
@@ -9,6 +9,7 @@ export const ProductProvider = ({ children }: any) => {
   const [product, setProduct] = useState<any[]>([]);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [invoice, setInvoice] = useState<any>();
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>([]);
   const [productReviews, setProductReviews] = useState<any[]>([]);
   const [count, setCount] = useState(0);
@@ -53,6 +54,16 @@ export const ProductProvider = ({ children }: any) => {
       .catch((error) => {})
   };
 
+  const fetchTransactions = (page: number, rowsPerPage: number, filter?:Filter[]) => {
+    axiosClient
+      .get(get_products_transactions(page, rowsPerPage, filter))
+      .then((res) => {
+        const allTransactions = res.data.recivedTranactions.concat(res.data.otherTransactions);
+        setTransactions(allTransactions);
+        setCount(allTransactions.length);
+      })
+      .catch((error) => {})
+  };
 
   return (
     <ProductContext.Provider
@@ -61,7 +72,9 @@ export const ProductProvider = ({ children }: any) => {
         fetchProduct,
         fetchInvoices,
         fetchInvoice,
+        fetchTransactions,
         product,
+        transactions,
         selectedProduct,
         productReviews,
         invoices,
@@ -82,7 +95,9 @@ export type productContextType = {
   fetchProduct: (id: string) => void;
   fetchInvoices: (page: number, rowsPerPage: number, filter?:Filter[]) => void;
   fetchInvoice: (id: string) => void;
+  fetchTransactions: (page: number, rowsPerPage: number, filter?:Filter[]) => void;
   product: any[];
+  transactions: any[];
   selectedProduct: any;
   productReviews: any[];
   invoices: any[];

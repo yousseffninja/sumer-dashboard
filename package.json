@@ -34,6 +34,7 @@
     "draft-js-import-html": "^1.4.1",
     "file-saver": "^2.0.5",
     "formik": "2.2.9",
+    "heroicons": "^2.0.18",
     "i18next": "^22.4.11",
     "mui-rte-fixed": "^2.1.0",
     "next": "13.1.6",

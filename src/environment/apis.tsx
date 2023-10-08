@@ -36,6 +36,9 @@ export const get_vouchers = (page: number = 1, rowsPerPage: number = 10, filter?
 export const get_voucher = (id: string) => `/discountVouchers/${id}`;
 export const create_voucher = () => `/discountVouchers`;
 
+// Transactions API
+export const get_products_transactions = (page: number = 1, rowsPerPage: number = 10, filter?: Filter[]) => `/products/transactions?page=${page + 1}&limit=${rowsPerPage}${buildQueryString(filter ?? [])}`
+
 // Admins API
 export const get_admin = (id: string) => `/admins/${id}`;
 export const get_admins = (page: number = 1, rowsPerPage: number = 10,  filter?: Filter[]) =>
