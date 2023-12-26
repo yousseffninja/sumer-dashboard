@@ -5,6 +5,9 @@ import { TopNav } from './top-nav';
 import { usePathname } from 'next/navigation';
 import { withAuthGuard } from '../../hocs/with-auth-guard';
 import React from 'react';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSocket } from '../../hooks/socket';
+import Notification from '../../components/Notification';
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -24,10 +27,14 @@ const LayoutContainer = styled('div')({
   width: '100%'
 });
 
+
+
 export const DashboardLayout = withAuthGuard((props: { children: any; }) => {
   const { children } = props;
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
+  const { socket, isConnected, notification } = useSocket();
 
   useEffect(
     () => {
@@ -39,6 +46,19 @@ export const DashboardLayout = withAuthGuard((props: { children: any; }) => {
     [pathname]
   );
 
+  // useEffect(() => {
+  //   console.log(notification);
+  //   if (notification) {
+  //     enqueueSnackbar(notification.message, { 
+  //       variant: notification.variant as "default" | "error" | "success" | "warning" | "info" | undefined,
+  //       anchorOrigin: {
+  //         vertical: 'top',
+  //         horizontal: 'center'
+  //       }
+  //     });
+  //   }
+  // }, [notification, enqueueSnackbar]);
+
   return (
     <>
       <TopNav onNavOpen={() => setOpenNav(true)} />
@@ -48,7 +68,15 @@ export const DashboardLayout = withAuthGuard((props: { children: any; }) => {
       />
       <LayoutRoot>
         <LayoutContainer>
-          {children}
+          <SnackbarProvider maxSnack={3}>
+            {notification && (
+              <Notification
+                message={notification.message}
+                variant={notification.variant || "default" as "default" | "error" | "success" | "warning" | "info"}
+              />
+            )}
+            {children} 
+          </SnackbarProvider>
         </LayoutContainer>
       </LayoutRoot>
     </>

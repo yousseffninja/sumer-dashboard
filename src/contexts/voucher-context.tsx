@@ -1,6 +1,7 @@
 import { createContext, useState } from 'react';
 import { Filter } from '@/@types/filter';
 import axiosClient from '@/configs/axios-client';
+import socket from '@/configs/socket-client';
 import { get_vouchers, get_voucher, create_voucher } from '@/environment/apis';
 
 export const VoucherContext = createContext<voucherContextType | undefined>(undefined)
@@ -32,9 +33,12 @@ export const VoucherProvider = ({ children }: any) => {
     axiosClient
       .post(create_voucher(), data)
       .then((res) => {
+        socket.emit('notification', {message: `There is a new voucher code: ${data.code} ! Check it out!`, variant: 'info'});
         setVoucher(res.data.data.doc);
+        
       })
-      .catch((error) => {})
+      .catch((error) => {
+      })
   };
 
   return (

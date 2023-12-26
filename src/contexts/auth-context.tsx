@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer, useRef } from 'react'
 import PropTypes from 'prop-types';
 import React from 'react';
 import axiosClient from '../configs/axios-client'
+import socket from '../configs/socket-client';
 
 type UserType = {
   id: string,
@@ -134,7 +135,8 @@ export const AuthProvider = ({ children }: any) => {
       const { data, token } = res.data;
       window.sessionStorage.setItem('authenticated', 'true');
       window.sessionStorage.setItem('token', token);
-      window.sessionStorage.setItem('user', data);
+      window.sessionStorage.setItem('user', JSON.stringify(data.user));
+      socket.emit('add-new-user', data.user._id);
       axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       user.id = data.id;
       user.avatar = data.avatar;
@@ -160,6 +162,7 @@ export const AuthProvider = ({ children }: any) => {
       type: HANDLERS.SIGN_OUT,
       payload: null
     });
+
   };
 
   return (

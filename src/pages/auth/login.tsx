@@ -20,6 +20,7 @@ import React from 'react';
 import { useAuth } from '../../hooks/use-auth';
 import { AuthLayout } from '../../layouts/auth/layout';
 import { useTranslation } from 'react-i18next';
+import socket from '../../configs/socket-client';
 
 const Page = () => {
   const { t } = useTranslation();
@@ -28,8 +29,8 @@ const Page = () => {
   const [method, setMethod] = useState('username');
   const formik = useFormik({
     initialValues: {
-      username: 'Yousseffmohamedd22@gmail.com',
-      password: 'Test@01022',
+      username: 'sumer-admin@gmail.com',
+      password: '123456789',
       submit: null
     },
     validationSchema: Yup.object({
